@@ -1,0 +1,97 @@
+#######################################
+# Syntax Coloring Map For GyverSegment
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+GyverSegment	KEYWORD1
+SegEffect	KEYWORD1
+SegAnimation	KEYWORD1
+SegBuffer	KEYWORD1
+SegRunner	KEYWORD1
+
+Disp595_4	KEYWORD1
+Disp595_8	KEYWORD1
+Disp1637_4	KEYWORD1
+Disp1637_6	KEYWORD1
+Disp1637Colon	KEYWORD1
+Disp7219	KEYWORD1
+DispBare	KEYWORD1
+
+Driver595	KEYWORD1
+Driver1637	KEYWORD1
+Driver7219	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+setEffect	KEYWORD2
+start	KEYWORD2
+stop	KEYWORD2
+refresh	KEYWORD2
+tick	KEYWORD2
+tickManual	KEYWORD2
+
+setCursor	KEYWORD2
+setChar	KEYWORD2
+set	KEYWORD2
+checkInt	KEYWORD2
+checkFloat	KEYWORD2
+fillChar	KEYWORD2
+fill	KEYWORD2
+clear	KEYWORD2
+printRight	KEYWORD2
+point	KEYWORD2
+showClock	KEYWORD2
+write	KEYWORD2
+getSize	KEYWORD2
+update	KEYWORD2
+setCursorEnd	KEYWORD2
+
+brightness	KEYWORD2
+maxDuty	KEYWORD2
+getBrightness	KEYWORD2
+getMaxDuty	KEYWORD2
+
+setText	KEYWORD2
+setWindow	KEYWORD2
+setSpeed	KEYWORD2
+setPeriod	KEYWORD2
+start	KEYWORD2
+stop	KEYWORD2
+resume	KEYWORD2
+tick	KEYWORD2
+tickManual	KEYWORD2
+running	KEYWORD2
+
+getCharCode	KEYWORD2
+intLen	KEYWORD2
+floatLen	KEYWORD2
+
+power	KEYWORD2
+colon	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+sseg	LITERAL1
+
+Blink	LITERAL1
+RollUp	LITERAL1
+RollDown	LITERAL1
+TwistFill	LITERAL1
+TwistClear	LITERAL1
+SlideUp	LITERAL1
+SlideDown	LITERAL1
+None	LITERAL1
+
+GS_ANIMATION_IDLE	LITERAL1
+GS_ANIMATION_STEP	LITERAL1
+GS_ANIMATION_END	LITERAL1
+GS_RUNNER_IDLE	LITERAL1
+GS_RUNNER_STEP	LITERAL1
+GS_RUNNER_END	LITERAL1
