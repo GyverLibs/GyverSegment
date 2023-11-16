@@ -14,9 +14,19 @@ class SegBuffer : public Print {
         _pos = pos;
     }
 
-    // установить курсор в конец дисплея
-    void setCursorEnd() {
-        _pos = _size - 1;
+    // установить курсор в начало
+    void home() {
+        setCursor(0);
+    }
+
+    // установить курсор от конца дисплея (справа налево)
+    void setCursorEnd(int16_t pos = 0) {
+        _pos = _size - 1 - pos;
+    }
+
+    // получить позицию курсора
+    int16_t getCursor() {
+        return _pos;
     }
 
     // проверка уместится ли int число при текущем курсоре
@@ -101,7 +111,22 @@ class SegBuffer : public Print {
         return _size;
     }
 
+    // аналог delay, но внутри него вызывается тикер динамической индикации
+    void delay(uint32_t prd) {
+        uint32_t ms = millis();
+        while (millis() - ms < prd) {
+            tick();
+            delay(0);  // esp
+        }
+    }
+
     virtual void update() {}
+
+    // пустой тикер, для совместимости с другими дисплеями
+    virtual uint8_t tick() {
+        return 0;
+    }
+
     uint8_t* buffer;
 
    private:

@@ -7,14 +7,14 @@
 
 # GyverSegment
 Самая мощная библиотека для работы с дисплеями на 7-сегментных индикаторах
-- Поддержка всех популярных китайских модулей (74HC595 4/8 цифр, TM1637 4/6 цифр + двоеточие, MAX7219 сцепка любой длины)
-- Символьный процессор: удобный вывод на дисплей любых данных и текста
+- Поддержка всех популярных китайских модулей (74HC595 4/8 цифр, TM1637 4/6 цифр + двоеточие, MAX7219 каскад любой длины)
+- Символьный процессор и встроенный шрифт: удобный вывод на дисплей любых данных
 - Единый API для всех дисплеев
 - Бегущая строка, можно выводить несколько на одном дисплее
 - 7 анимированных эффектов переключения символов
-- Удобный API для поддержки всех возможностей на любом дисплее
+- Удобный API для поддержки всех возможностей на любом другом дисплее
 - Настройка яркости для динамических дисплеев
-- Быстрый bitbang IO на базе GyverIO
+- Быстрый bitbang на базе GyverIO - отправка данных на дисплей в 10 раз быстрее, чем в других библиотеках
 
 ### Совместимость
 Совместима со всеми Arduino платформами (используются Arduino-функции)
@@ -35,17 +35,17 @@
 ### Поддерживаемые дисплеи
 > Если вы нашли хороший модуль дисплея, который не поддерживается библиотекой - пишите. Закажу, протестирую, добавлю в библиотеку.
 
-| Фото                                                | Чип            | AliExpress                                                                                                                                    | Класс           |
-|-----------------------------------------------------|----------------|-----------------------------------------------------------------------------------------------------------------------------------------------|-----------------|
-| ![Disp1637Colon-0.36](/img/Disp1637Colon-0.36.webp) | TM1637 (0.36") | [ссылка](https://fas.st/HEYSD?erid=LatgBbQo6), [ссылка](https://fas.st/kIITut?erid=LatgBbQo6), [ссылка](https://fas.st/PQw6B?erid=LatgBbQo6)  | `Disp1637Colon` |
-| ![Disp1637Colon-0.56](/img/Disp1637Colon-0.56.webp) | TM1637 (0.56") | [ссылка](https://fas.st/Y9x-Ei?erid=LatgBbQo6), [ссылка](https://fas.st/i9Wnt?erid=LatgBbQo6)                                                 | `Disp1637Colon` |
-| ![Disp1637_4-0.36](/img/Disp1637_4-0.36.webp)       | TM1637 (0.36") | [ссылка](https://fas.st/6Ntg-?erid=LatgBbQo6), [ссылка](https://fas.st/zfmia?erid=LatgBbQo6), [ссылка](https://fas.st/s60Yu?erid=LatgBbQo6)   | `Disp1637_4`    |
-| ![Disp1637_4-0.56](/img/Disp1637_4-0.56.webp)       | TM1637 (0.56") | [ссылка](https://fas.st/i9Wnt?erid=LatgBbQo6), [ссылка](https://fas.st/VBGW8?erid=LatgBbQo6)                                                  | `Disp1637_4`    |
-| ![Disp1637_6-0.36](/img/Disp1637_6-0.36.webp)       | TM1637 (0.36") | [ссылка](https://fas.st/4uHOCd?erid=LatgBbQo6), [ссылка](https://fas.st/upp5P?erid=LatgBbQo6), [ссылка](https://fas.st/tT1PEx?erid=LatgBbQo6) | `Disp1637_6`    |
-| ![Disp1637_6-0.56](/img/Disp1637_6-0.56.webp)       | TM1637 (0.56") | [ссылка](https://fas.st/i0dmi?erid=LatgBbQo6)                                                                                                 | `Disp1637_6`    |
-| ![Disp595_4](/img/Disp595_4.webp)                   | 74HC595        | [ссылка](https://fas.st/WC-EE?erid=LatgBbQo6), [ссылка](https://fas.st/5d6JH?erid=LatgBbQo6), [ссылка](https://fas.st/UT6RqC?erid=LatgBbQo6)  | `Disp595_4`     |
-| ![Disp595_8](/img/Disp595_8.webp)                   | 74HC595        | [ссылка](https://fas.st/SzV0w?erid=LatgBbQo6), [ссылка](https://fas.st/YM7Fu?erid=LatgBbQo6)                                                  | `Disp595_8`     |
-| ![Disp7219](/img/Disp7219.webp)                     | MAX7219        | [ссылка](https://fas.st/_ugxv1?erid=LatgBbQo6), [ссылка](https://fas.st/IqQly3?erid=LatgBbQo6)                                                | `Disp7219`      |
+| Фото                                                | Контроллер | Размер | AliExpress                                                                                                                                    | Класс           |
+|-----------------------------------------------------|------------|--------|-----------------------------------------------------------------------------------------------------------------------------------------------|-----------------|
+| ![Disp1637Colon-0.36](/img/Disp1637Colon-0.36.webp) | TM1637     | 0.36"  | [ссылка](https://fas.st/HEYSD?erid=LatgBbQo6), [ссылка](https://fas.st/kIITut?erid=LatgBbQo6), [ссылка](https://fas.st/PQw6B?erid=LatgBbQo6)  | `Disp1637Colon` |
+| ![Disp1637Colon-0.56](/img/Disp1637Colon-0.56.webp) | TM1637     | 0.56"  | [ссылка](https://fas.st/Y9x-Ei?erid=LatgBbQo6), [ссылка](https://fas.st/i9Wnt?erid=LatgBbQo6)                                                 | `Disp1637Colon` |
+| ![Disp1637_4-0.36](/img/Disp1637_4-0.36.webp)       | TM1637     | 0.36"  | [ссылка](https://fas.st/6Ntg-?erid=LatgBbQo6), [ссылка](https://fas.st/zfmia?erid=LatgBbQo6), [ссылка](https://fas.st/s60Yu?erid=LatgBbQo6)   | `Disp1637_4`    |
+| ![Disp1637_4-0.56](/img/Disp1637_4-0.56.webp)       | TM1637     | 0.56"  | [ссылка](https://fas.st/i9Wnt?erid=LatgBbQo6), [ссылка](https://fas.st/VBGW8?erid=LatgBbQo6)                                                  | `Disp1637_4`    |
+| ![Disp1637_6-0.36](/img/Disp1637_6-0.36.webp)       | TM1637     | 0.36"  | [ссылка](https://fas.st/4uHOCd?erid=LatgBbQo6), [ссылка](https://fas.st/upp5P?erid=LatgBbQo6), [ссылка](https://fas.st/tT1PEx?erid=LatgBbQo6) | `Disp1637_6`    |
+| ![Disp1637_6-0.56](/img/Disp1637_6-0.56.webp)       | TM1637     | 0.56"  | [ссылка](https://fas.st/i0dmi?erid=LatgBbQo6)                                                                                                 | `Disp1637_6`    |
+| ![Disp595_4](/img/Disp595_4.webp)                   | 74HC595    | 0.36"  | [ссылка](https://fas.st/WC-EE?erid=LatgBbQo6), [ссылка](https://fas.st/5d6JH?erid=LatgBbQo6), [ссылка](https://fas.st/UT6RqC?erid=LatgBbQo6)  | `Disp595_4`     |
+| ![Disp595_8](/img/Disp595_8.webp)                   | 74HC595    | 0.36"  | [ссылка](https://fas.st/SzV0w?erid=LatgBbQo6), [ссылка](https://fas.st/YM7Fu?erid=LatgBbQo6)                                                  | `Disp595_8`     |
+| ![Disp7219](/img/Disp7219.webp)                     | MAX7219    | 0.36"  | [ссылка](https://fas.st/_ugxv1?erid=LatgBbQo6), [ссылка](https://fas.st/IqQly3?erid=LatgBbQo6)                                                | `Disp7219`      |
 
 ### Как устроена библиотека
 - Все дисплеи работают в режиме программного буфера - после внесения изменений в буфер нужно вызвать `update()`. Бегущая строка и эффекты переключения сами вызывают `update()`, когда им это нужно
@@ -88,7 +88,7 @@ void brightness(uint8_t bright);        // яркость, 0.. 7
 ```cpp
 Disp595_4(uint8_t DIO, uint8_t SCLK, uint8_t RCLK);   // конструктор
 
-void tick();    // тикер динамической индикации, вызывать в loop постоянно или по таймеру
+uint8_t tick();    // тикер динамической индикации, вызывать в loop постоянно или по таймеру
 void brightness(uint8_t bright);    // установить яркость (0.. maxDuty, умолч 15)
 void maxDuty(uint8_t duty);         // установить макс. значение яркости (умолч. 15). 0 чтобы отключить модуль яркости
 ```
@@ -96,7 +96,7 @@ void maxDuty(uint8_t duty);         // установить макс. значе
 ```cpp
 Disp595_8(uint8_t DIO, uint8_t SCLK, uint8_t RCLK);   // конструктор
 
-void tick();    // тикер динамической индикации, вызывать в loop постоянно или по таймеру
+uint8_t tick();    // тикер динамической индикации, вызывать в loop постоянно или по таймеру
 void brightness(uint8_t bright);    // установить яркость (0.. maxDuty, умолч 15)
 void maxDuty(uint8_t duty);         // установить макс. значение яркости (умолч. 15). 0 чтобы отключить модуль яркости
 ```
@@ -116,7 +116,7 @@ void brightness(uint8_t value);     // установить яркость (0.. 
 ```cpp
 DispBare<uint8_t digits, bool decimal = 1, bool anode = 0>(uint8_t* dig, uint8_t* seg);
 
-void tick();    // тикер динамической индикации, вызывать в loop постоянно или по таймеру
+uint8_t tick();    // тикер динамической индикации, вызывать в loop постоянно или по таймеру
 void brightness(uint8_t bright);    // установить яркость (0.. maxDuty, умолч 15)
 void maxDuty(uint8_t duty);         // установить макс. значение яркости (умолч. 15). 0 чтобы отключить модуль яркости
 ```
@@ -126,8 +126,8 @@ void maxDuty(uint8_t duty);         // установить макс. значе
 - `dig` - массив пинов индикаторов (совпадает по количеству с `digits`)
 - `seg` - массив пинов сегментов (7 пинов без точки `decimal`, 8 с точкой)
 
----
 ### Инструменты
+---
 #### SegBuffer - вывод на дисплей
 Вывод на дисплей осуществляется так же, как у 99% других дисплеев и библиотек: нужно установить курсор в `setCursor(x)` и вывести нужные данные в `print(данные)`:
 - Установить курсор можно в том числе "за дисплей" для создания своих анимаций и других сценариев
@@ -138,8 +138,29 @@ void maxDuty(uint8_t duty);         // установить макс. значе
 - Точки в тексте обрабатываются отдельно и выводятся в десятичный разделитель дисплея, если он есть
 - Есть режим `printRight(true)`, в котором данные будут печататься справа налево от текущей позиции курсора. Курсор в этом случае не смещается во время печати, вместо этого весь дисплей смещается влево
 
+```cpp
+  DispXXX disp;   // любой дисплей из библиотеки
+  // ...
+  disp.setCursor(0);
+  disp.print("hello");
+  disp.update();
+
+  // выравнивание по правому краю
+  // числа неизвестной длины
+  int val = 123;
+  disp.setCursorEnd(sseg::intLen(val) - 1);
+  disp.print(val);
+
+  // или так
+  disp.printRight(true);  // печатать справа
+  disp.setCursorEnd();    // курсор в конец
+  // disp.fillChar('0');  // с заполнением нулями
+  disp.print(val);
+  disp.printRight(false); // отключить печать справа
+```
+
 <details>
-<summary>SegBuffer</summary>
+<summary>Описание класса</summary>
 
 ```cpp
 // конструктор. decimal - поддерживает ли дисплей десятичные точки
@@ -148,8 +169,14 @@ SegBuffer(uint8_t* buffer, uint8_t size, bool decimal);
 // установить курсор для печати, 0 (начало) слева
 void setCursor(int16_t pos);
 
-// установить курсор в конец дисплея
-void setCursorEnd();
+// установить курсор в начало
+void home();
+
+// установить курсор от конца дисплея (справа налево)
+void setCursorEnd(int16_t pos = 0);
+
+// получить позицию курсора
+int16_t getCursor();
 
 // проверка уместится ли int число при текущем курсоре
 bool checkInt(int32_t val);
@@ -186,6 +213,9 @@ size_t write(uint8_t data);
 
 // получить размер дисплея
 uint8_t getSize();
+
+// аналог delay, но внутри него вызывается тикер динамической индикации
+void delay(uint32_t prd);
 ```
 </details>
 
@@ -238,17 +268,13 @@ void foo() {
   String str = "local string";
   run.setText(s);
   run.start();
-  
-  // ждать в цикле, пока не пробежит вся строка
-  while (run.tick() != GS_RUNNER_END) {
-    // disp.tick();   // для динамических дисплеев
-    // yield();       // для ESP
-  }
+  run.waitEnd();
+  // это работает в том числе для динамических дисплеев
 }
 ```
 
 <details>
-<summary>SegRunner</summary>
+<summary>Описание класса</summary>
 
 ```cpp
 // конструктор
@@ -284,6 +310,9 @@ void resume();
 // true - строка движется
 bool running();
 
+// ждать окончания движения строки
+void waitEnd();
+
 // тикер. Вернёт 0 в холостом, 1 при новом шаге, 2 при завершении движения
 // Можно передать false чтобы дисплей не обновлялся сам
 uint8_t tick(bool update = true);
@@ -304,9 +333,57 @@ GS_RUNNER_END
 Асинхронные анимации смены данных на дисплее
 - Анимация создаёт свой буфер типа `SegBuffer`, в который нужно выводить новые данные *вместо вывода на дисплей*
 - Система сама увидит изменение данных и воспроизведёт установленный эффект для смены изображения на актуальное
+- Анимация воспроизводится только в заданных границах дисплея (начало, длина), остальной дисплей не затрагивает
+
+Эффекты:
+```cpp
+SegEffect::Blink
+SegEffect::RollUp
+SegEffect::RollDown
+SegEffect::TwistFill
+SegEffect::TwistClear
+SegEffect::SlideUp
+SegEffect::SlideDown
+```
+
+```cpp
+DispXXX disp;           // любой дисплей из библиотеки
+// указать кол-во символов, дисплей и позицию курсора дисплея
+SegAnimation<3> anim(&disp, 0);
+
+void setup() {
+  anim.setEffect(SegEffect::TwistClear);
+  anim.start();
+
+  // вывести новые данные и ждать окончания эффекта
+  // ожидание корректно работает в т.ч. для динамических дисплеев
+  anim.setCursor(0);
+  anim.print(random(1000));
+  anim.waitEnd();
+  delay(1000);
+
+  anim.setCursor(0);
+  anim.print(random(1000));
+  anim.waitEnd();
+  delay(1000);
+}
+
+void loop() {
+  anim.tick();
+  disp.tick();
+
+  static uint32_t tmr;
+  if (millis() - tmr >= 1000) {
+    // если где то изменить данные аниматора - 
+    // он сам обновит дисплей
+    anim.setCursor(0);
+    anim.print(random(1000));
+  }
+}
+```
 
 <details>
-<summary>SegAnimation</summary>
+<summary>Описание класса</summary>
 
 ```cpp
 // конструктор
@@ -327,6 +404,9 @@ bool running();
 // принудительно обновить дисплей из буфера эффекта
 void refresh();
 
+// ждать окончания воспроизведения эффекта
+void waitEnd();
+
 // тикер. Вернёт 0 в холостом, 1 при новом шаге, 2 при завершении анимации
 uint8_t tick();
 
@@ -339,6 +419,23 @@ GS_ANIMATION_STEP
 GS_ANIMATION_END
 ```
 </details>
+
+---
+
+#### Утилиты
+
+```cpp
+// получить код для символа
+uint8_t sseg::getCharCode(char symb);
+
+// получить длину int числа
+uint8_t sseg::intLen(int32_t val);
+
+// получить длину float числа при указанной точности
+uint8_t sseg::floatLen(double val, uint8_t dec = 2);
+```
+
+---
 
 <a id="examples"></a>
 
@@ -359,27 +456,25 @@ uint8_t segs[] = {6, 7, 8, 9, 10, 11, 12, 13};  // пины сегментов
 // BareDisp<8, true, false> disp(digs, segs);
 
 void setup() {
-  // такой вывод работает только со статическими дисплеями
-  // TM1637, MAX7219
-  // потому что delay
+  // используется disp.delay() для дисплеев с дин. индикацией
 
   // текст
   disp.setCursor(0);
   disp.print("hello");
   disp.update();
-  delay(500);
+  disp.delay(1000);
 
   // целое число
   disp.setCursor(0);
   disp.print(1234);
   disp.update();
-  delay(500);
+  disp.delay(1000);
 
   // float
   disp.setCursor(0);
   disp.print(3.14, 3);  // точность 3 знака
   disp.update();
-  delay(500);
+  disp.delay(1000);
 
   // вывод числа справа с заполнением нулями
   disp.setCursorEnd();
@@ -387,7 +482,7 @@ void setup() {
   disp.fillChar('0');
   disp.print(3.14, 3);
   disp.update();
-  delay(500);
+  disp.delay(1000);
 
   disp.printRight(false);
 }

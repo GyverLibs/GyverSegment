@@ -36,6 +36,9 @@ tick	KEYWORD2
 tickManual	KEYWORD2
 
 setCursor	KEYWORD2
+home	KEYWORD2
+setCursorEnd	KEYWORD2
+getCursor	KEYWORD2
 setChar	KEYWORD2
 set	KEYWORD2
 checkInt	KEYWORD2
@@ -49,7 +52,6 @@ showClock	KEYWORD2
 write	KEYWORD2
 getSize	KEYWORD2
 update	KEYWORD2
-setCursorEnd	KEYWORD2
 
 brightness	KEYWORD2
 maxDuty	KEYWORD2
@@ -66,6 +68,7 @@ resume	KEYWORD2
 tick	KEYWORD2
 tickManual	KEYWORD2
 running	KEYWORD2
+waitEnd	KEYWORD2
 
 getCharCode	KEYWORD2
 intLen	KEYWORD2

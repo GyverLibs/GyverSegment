@@ -28,10 +28,6 @@ class Driver1637 {
         update();
     }
 
-    // пустой тикер, для совместимости с другими дисплеями
-    void tick() {
-    }
-
    protected:
     void send(uint8_t* buf, uint8_t size) {
         _start();

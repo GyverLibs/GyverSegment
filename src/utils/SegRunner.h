@@ -11,9 +11,9 @@
 
 class SegRunner {
    public:
-    SegRunner(SegBuffer* buf) : _buf(buf) {
+    SegRunner(SegBuffer* disp) : _disp(disp) {
         _x0 = 0;
-        _x1 = _buf->getSize() - 1;
+        _x1 = _disp->getSize() - 1;
     }
 
     // установить текст const char*
@@ -37,8 +37,8 @@ class SegRunner {
 
     // установить окно вывода (x0, x1)
     void setWindow(uint8_t x0, uint8_t x1) {
-        _x0 = min(x0, _buf->getSize());
-        _x1 = min(x1, _buf->getSize());
+        _x0 = min(x0, _disp->getSize());
+        _x1 = min(x1, _disp->getSize());
         if (_x0 > _x1) {
             uint8_t b = _x0;
             _x0 = _x1;
@@ -55,7 +55,7 @@ class SegRunner {
 
     // установить скорость (период в мс)
     void setPeriod(uint16_t ms) {
-        _prd = ms;
+        if (_str) _prd = ms;
     }
 
     // запустить бегущую строку с начала
@@ -72,12 +72,24 @@ class SegRunner {
     // продолжить движение с момента остановки
     void resume() {
         _tmr = (uint16_t)millis();
-        if (!_tmr) _tmr = 1;
+        if (!_tmr) {
+            _tmr = 1;
+            delay(1);
+        }
     }
 
     // true - строка движется
     bool running() {
-        return _tmr;
+        return _tmr && _str;
+    }
+
+    // ждать окончания движения строки
+    void waitEnd() {
+        if (!running()) return;
+        while (tick() != GS_RUNNER_END) {
+            _disp->tick();
+            delay(0);  // esp
+        }
     }
 
     // тикер. Вернёт 0 в холостом, 1 при новом шаге, 2 при завершении движения
@@ -94,7 +106,7 @@ class SegRunner {
     // сдвинуть строку на 1 символ. Можно передать false, чтобы дисплей не обновлялся сам
     uint8_t tickManual(bool update = true) {
         if (!_str) return 0;
-        memset(_buf->buffer + _x0, 0, _x1 - _x0 + 1);
+        memset(_disp->buffer + _x0, 0, _x1 - _x0 + 1);
 
         int16_t cpos = 0;
         for (uint8_t i = 0, j = 0; i <= _x1 - _x0;) {
@@ -104,13 +116,13 @@ class SegRunner {
                 if (ch == '.') {
                     if (i > 0) {
                         i--;
-                        _buf->point(i + _x0);
+                        _disp->point(i + _x0);
                     } else {
                         _pos++;
                         continue;
                     }
                 } else {
-                    _buf->setChar(i + _x0, ch);
+                    _disp->setChar(i + _x0, ch);
                 }
             }
             i++;
@@ -120,10 +132,10 @@ class SegRunner {
         cpos++;
         if (cpos >= 0 && cpos < _len) {
             char ch = _pgm ? pgm_read_byte(_str + cpos) : _str[cpos];
-            if (ch == '.') _buf->point(_x1);
+            if (ch == '.') _disp->point(_x1);
         }
 
-        if (update) _buf->update();
+        if (update) _disp->update();
         if (++_pos > _len) {
             start();
             return 2;
@@ -132,7 +144,7 @@ class SegRunner {
     }
 
    private:
-    SegBuffer* _buf;
+    SegBuffer* _disp;
     const char* _str = nullptr;
     int16_t _len;
     uint8_t _x0, _x1;

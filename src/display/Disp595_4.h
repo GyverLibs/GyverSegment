@@ -20,8 +20,9 @@ class Disp595_4 : public Driver595, public SegBuffer {
     }
 
     // тикер динамической индикации, вызывать в loop постоянно или по таймеру
-    void tick() {
+    uint8_t tick() {
         Driver595::tick(_buf, 4);
+        return 0;
     }
 
     uint8_t buffer[4] = {0};

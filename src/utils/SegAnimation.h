@@ -58,6 +58,15 @@ class SegAnimation : public SegBuffer {
         return _count;
     }
 
+    // ждать окончания воспроизведения эффекта
+    void waitEnd() {
+        if (!_tmr || (!running() && !_differ())) return;
+        while (tick() != GS_ANIMATION_END) {
+            _disp->tick();
+            delay(0);  // esp
+        }
+    }
+
     // тикер. Вернёт 0 в холостом, 1 при новом шаге, 2 при завершении анимации
     uint8_t tick() {
         if (_tmr && (uint16_t)((uint16_t)millis() - _tmr) >= _prd) {
@@ -77,11 +86,11 @@ class SegAnimation : public SegBuffer {
             }
             _count--;
             if (!_count) refresh();
-            else _disp->update();   // skip
+            else _disp->update();  // skip
             return _count ? 1 : 2;
 
         } else {
-            if (memcmp(_disp->buffer + _from, buffer, size)) {
+            if (_differ()) {
                 _count = pgm_read_byte(_segef_prd + (uint8_t)_eff);
                 _mask = 0;
                 for (uint8_t i = 0; i < size; i++) {
@@ -106,7 +115,14 @@ class SegAnimation : public SegBuffer {
 
     void _start() {
         _tmr = (uint16_t)millis();
-        if (!_tmr) _tmr = 1;
+        if (!_tmr) {
+            _tmr = 1;
+            delay(1);
+        }
+    }
+
+    bool _differ() {
+        return memcmp(_disp->buffer + _from, buffer, size);
     }
 
     void _apply(uint8_t i) {

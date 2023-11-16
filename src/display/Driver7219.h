@@ -44,10 +44,6 @@ class Driver7219 {
         _cmd(_GSEG_7219_SHUTDOWDN, state);
     }
 
-    // пустой тикер, для совместимости с другими дисплеями
-    void tick() {
-    }
-
    protected:
     void write(uint8_t* data, bool reverse = 0) {
         for (int i = 0; i < 8; i++) {
