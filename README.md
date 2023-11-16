@@ -61,49 +61,32 @@ uint8_t* buffer;            // доступ к буферу
 ```
 
 ### TM1637
-#### Модуль 4 цифры + двоеточие
 ```cpp
-Disp1637Colon(uint8_t DIO, uint8_t CLK);// конструктор
+Disp1637Colon(uint8_t DIO, uint8_t CLK);  // Модуль 4 цифры + двоеточие
+Disp1637_4(uint8_t DIO, uint8_t CLK);     // Модуль 4 цифры + точки
+Disp1637_6(uint8_t DIO, uint8_t CLK);     // Модуль 6 цифр + точки
 
-void colon(bool show);                  // вкл-выкл двоеточие
-void brightness(uint8_t bright);        // яркость, 0.. 7
-```
+// у всех
+void brightness(uint8_t bright);          // яркость, 0.. 7
 
-#### Модуль 4 цифры + точки
-```cpp
-Disp1637_4(uint8_t DIO, uint8_t CLK);   // конструктор
-
-void brightness(uint8_t bright);        // яркость, 0.. 7
-```
-
-#### Модуль 6 цифр + точки
-```cpp
-Disp1637_6(uint8_t DIO, uint8_t CLK);   // конструктор
-
-void brightness(uint8_t bright);        // яркость, 0.. 7
+// у Disp1637Colon
+void colon(bool show);                    // вкл-выкл двоеточие
 ```
 
 ### 74HC595
-#### Модуль 4 цифры
 ```cpp
-Disp595_4(uint8_t DIO, uint8_t SCLK, uint8_t RCLK);   // конструктор
+Disp595_4(uint8_t DIO, uint8_t SCLK, uint8_t RCLK);   // Модуль 4 цифры
+Disp595_8(uint8_t DIO, uint8_t SCLK, uint8_t RCLK);   // Модуль 8 цифр
 
-uint8_t tick();    // тикер динамической индикации, вызывать в loop постоянно или по таймеру
-void brightness(uint8_t bright);    // установить яркость (0.. maxDuty, умолч 15)
-void maxDuty(uint8_t duty);         // установить макс. значение яркости (умолч. 15). 0 чтобы отключить модуль яркости
-```
-#### Модуль 8 цифр
-```cpp
-Disp595_8(uint8_t DIO, uint8_t SCLK, uint8_t RCLK);   // конструктор
-
+// у всех
 uint8_t tick();    // тикер динамической индикации, вызывать в loop постоянно или по таймеру
 void brightness(uint8_t bright);    // установить яркость (0.. maxDuty, умолч 15)
 void maxDuty(uint8_t duty);         // установить макс. значение яркости (умолч. 15). 0 чтобы отключить модуль яркости
 ```
 
 ### MAX7219
-#### Модуль 8 цифр
 ```cpp
+// Модуль 8 цифр
 Disp7219<uint8_t amount>(uint8_t DIN, uint8_t CLK, uint8_t CS, bool reverse = true);
 
 void begin();                       // инициализировать (нужно после сброса питания модуля)
@@ -126,9 +109,7 @@ void maxDuty(uint8_t duty);         // установить макс. значе
 - `dig` - массив пинов индикаторов (совпадает по количеству с `digits`)
 - `seg` - массив пинов сегментов (7 пинов без точки `decimal`, 8 с точкой)
 
-### Инструменты
----
-#### SegBuffer - вывод на дисплей
+### SegBuffer - вывод на дисплей
 Вывод на дисплей осуществляется так же, как у 99% других дисплеев и библиотек: нужно установить курсор в `setCursor(x)` и вывести нужные данные в `print(данные)`:
 - Установить курсор можно в том числе "за дисплей" для создания своих анимаций и других сценариев
 - `print()` - стандартный интерфейс [библиотеки Arduino](https://www.arduino.cc/reference/en/language/functions/communication/serial/print/), выводит любые данные (целые числа, с плавающей точкой, строки любого типа)
@@ -219,9 +200,7 @@ void delay(uint32_t prd);
 ```
 </details>
 
----
-
-#### SegRunner - бегущая строка
+### SegRunner - бегущая строка
 Асинхронный вывод на дисплей бегущей строки в установленных границах курсора
 - Так как вывод асинхронный, строка должна быть либо объявлена глобально, либо в области определения тикера на время работы бегущей строки.
 - Во время движения строку можно изменять, это будет работать корректно. Но если у строки меняется длина - нужно вызвать `setText()` для её пересчёта. Движение не начнётся заново!
@@ -327,9 +306,7 @@ GS_RUNNER_END
 ```
 </details>
 
----
-
-#### SegAnimation - эффекты переключения
+### SegAnimation - эффекты переключения
 Асинхронные анимации смены данных на дисплее
 - Анимация создаёт свой буфер типа `SegBuffer`, в который нужно выводить новые данные *вместо вывода на дисплей*
 - Система сама увидит изменение данных и воспроизведёт установленный эффект для смены изображения на актуальное
@@ -360,12 +337,12 @@ void setup() {
   anim.setCursor(0);
   anim.print(random(1000));
   anim.waitEnd();
-  delay(1000);
+  disp.delay(1000);
 
   anim.setCursor(0);
   anim.print(random(1000));
   anim.waitEnd();
-  delay(1000);
+  disp.delay(1000);
 }
 
 void loop() {
@@ -420,9 +397,7 @@ GS_ANIMATION_END
 ```
 </details>
 
----
-
-#### Утилиты
+### Утилиты
 
 ```cpp
 // получить код для символа
@@ -442,13 +417,20 @@ uint8_t sseg::floatLen(double val, uint8_t dec = 2);
 ## Примеры
 
 ```cpp
+#include <Arduino.h>
+#include <GyverSegment.h>
+
+#define DIO_PIN 2
+#define CLK_PIN 3
+#define LAT_PIN 4
+
 // объявление дисплеев. Выбери любой
-Disp595_4 disp(DIO, CLK, LAT);
-// Disp595_8 disp(DIO, CLK, LAT);
-// Disp1637_4 disp(DIO, CLK);
-// Disp1637_6 disp(DIO, CLK);
-// Disp1637Colon disp(DIO, CLK);
-// Disp7219<1> disp(DI, CLK, CS);  // 1 чип - 8 цифр
+Disp595_4 disp(DIO_PIN, CLK_PIN, LAT_PIN);
+// Disp595_8 disp(DIO_PIN, CLK_PIN, LAT_PIN);
+// Disp1637_4 disp(DIO_PIN, CLK_PIN);
+// Disp1637_6 disp(DIO_PIN, CLK_PIN);
+// Disp1637Colon disp(DIO_PIN, CLK_PIN);
+// Disp7219<1> disp(DIO_PIN, CLK_PIN, LAT_PIN);  // 1 чип - 8 цифр
 
 uint8_t digs[] = {2, 3, 4, 5, A2, A3, A4, A5};  // пины цифр
 uint8_t segs[] = {6, 7, 8, 9, 10, 11, 12, 13};  // пины сегментов
