@@ -69,6 +69,12 @@ class SegBuffer : public Print {
         _rtol = right;
     }
 
+    // с указанием длины смещения буфера
+    void printRight(bool right, uint8_t shiftSize) {
+        printRight(right);
+        _shiftSize = shiftSize;
+    }
+
     // установить или выключить десятичную точку на позиции
     void point(uint8_t pos, bool state = 1) {
         if (pos < _size && _dec) bitWrite(buffer[pos], 7, state);
@@ -98,7 +104,8 @@ class SegBuffer : public Print {
 
         if (_pos >= 0 && _pos < _size) {
             if (_rtol) {
-                for (int8_t i = 0; i < _pos; i++) buffer[i] = buffer[i + 1];
+                uint8_t from = (_shiftSize <= _pos) ? (_pos - _shiftSize + 1) : 0;
+                for (int8_t i = from; i < _pos; i++) buffer[i] = buffer[i + 1];
             }
             buffer[_pos] = sseg::getCharCode(data);
         }
@@ -134,4 +141,5 @@ class SegBuffer : public Print {
     bool _dec;
     int16_t _pos = 0;
     bool _rtol = 0;
+    uint8_t _shiftSize = 0;
 };

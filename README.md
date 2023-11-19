@@ -193,6 +193,9 @@ void clear();
 // направление печати: false - печать слева, true - задвигание справа
 void printRight(bool right);
 
+// с указанием длины смещения буфера
+void printRight(bool right, uint8_t shiftSize);
+
 // установить или выключить десятичную точку на позиции
 void point(uint8_t pos, bool state = 1);
 
@@ -395,6 +398,9 @@ bool running();
 // принудительно обновить дисплей из буфера эффекта
 void refresh();
 
+// воспроизводить эффект на всех цифрах (умолч. откл)
+void forceAll(bool force);
+
 // ждать окончания воспроизведения эффекта
 void waitEnd();
 
@@ -533,6 +539,7 @@ void loop() {
 <a id="versions"></a>
 ## Версии
 - v1.0
+- v1.1 - добавлены forceAll() и длина для printRight()
 
 <a id="install"></a>
 ## Установка

@@ -49,8 +49,13 @@ class SegAnimation : public SegBuffer {
 
     // принудительно обновить дисплей из буфера эффекта
     void refresh() {
-        memcpy(_disp->buffer, buffer, size);
+        memcpy(_disp->buffer + _from, buffer, size);
         _disp->update();
+    }
+
+    // воспроизводить эффект на всех цифрах (умолч. откл)
+    void forceAll(bool force) {
+        _maskall = force;
     }
 
     // true - эффект воспроизводится
@@ -81,8 +86,12 @@ class SegAnimation : public SegBuffer {
         if (_eff == SegEffect::None) return 0;
 
         if (_count) {
-            for (uint8_t i = 0; i < size; i++) {
-                if (_mask & (1ul << i)) _apply(i);
+            if (_maskall) {
+                for (uint8_t i = 0; i < size; i++) _apply(i);
+            } else {
+                for (uint8_t i = 0; i < min(size, 32); i++) {
+                    if ((_mask & (1ul << i))) _apply(i);
+                }
             }
             _count--;
             if (!_count) refresh();
@@ -92,9 +101,11 @@ class SegAnimation : public SegBuffer {
         } else {
             if (_differ()) {
                 _count = pgm_read_byte(_segef_prd + (uint8_t)_eff);
-                _mask = 0;
-                for (uint8_t i = 0; i < size; i++) {
-                    if (_disp->buffer[_from + i] != buffer[i]) _mask |= (1ul << i);
+                if (!_maskall) {
+                    _mask = 0;
+                    for (uint8_t i = 0; i < min(size, 32); i++) {
+                        if (_disp->buffer[_from + i] != buffer[i]) _mask |= (1ul << i);
+                    }
                 }
             }
         }
@@ -112,6 +123,7 @@ class SegAnimation : public SegBuffer {
     SegEffect _eff = SegEffect::None;
     uint8_t _count = 0;
     uint32_t _mask = 0;
+    bool _maskall = 0;
 
     void _start() {
         _tmr = (uint16_t)millis();

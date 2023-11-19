@@ -34,6 +34,7 @@ stop	KEYWORD2
 refresh	KEYWORD2
 tick	KEYWORD2
 tickManual	KEYWORD2
+forceAll	KEYWORD2
 
 setCursor	KEYWORD2
 home	KEYWORD2
