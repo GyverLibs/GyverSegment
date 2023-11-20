@@ -15,5 +15,6 @@
 #include "display/Driver1637.h"
 //
 #include "utils/SegAnimation.h"
+#include "utils/SegAnimationExt.h"
 #include "utils/SegBuffer.h"
 #include "utils/SegRunner.h"

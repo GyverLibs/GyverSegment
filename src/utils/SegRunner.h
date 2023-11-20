@@ -55,7 +55,7 @@ class SegRunner {
 
     // установить скорость (период в мс)
     void setPeriod(uint16_t ms) {
-        if (_str) _prd = ms;
+        _prd = ms;
     }
 
     // запустить бегущую строку с начала
@@ -66,21 +66,18 @@ class SegRunner {
 
     // остановить бегущую строку
     void stop() {
-        _tmr = 0;
+        _state = 0;
     }
 
     // продолжить движение с момента остановки
     void resume() {
         _tmr = (uint16_t)millis();
-        if (!_tmr) {
-            _tmr = 1;
-            delay(1);
-        }
+        _state = 1;
     }
 
     // true - строка движется
     bool running() {
-        return _tmr && _str;
+        return _state && _str;
     }
 
     // ждать окончания движения строки
@@ -88,15 +85,15 @@ class SegRunner {
         if (!running()) return;
         while (tick() != GS_RUNNER_END) {
             _disp->tick();
-            delay(0);  // esp
+            yield();  // esp
         }
     }
 
     // тикер. Вернёт 0 в холостом, 1 при новом шаге, 2 при завершении движения
     // Можно передать false, чтобы дисплей не обновлялся сам
     uint8_t tick(bool update = true) {
-        if (!_str) return 0;
-        if (_tmr && (uint16_t)((uint16_t)millis() - _tmr) >= _prd) {
+        if (!running()) return 0;
+        if ((uint16_t)((uint16_t)millis() - _tmr) >= _prd) {
             resume();
             return tickManual(update);
         }
@@ -151,4 +148,5 @@ class SegRunner {
     int16_t _pos;
     bool _pgm;
     uint16_t _tmr = 0, _prd = 400;
+    bool _state = 0;
 };

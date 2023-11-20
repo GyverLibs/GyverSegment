@@ -123,7 +123,7 @@ class SegBuffer : public Print {
         uint32_t ms = millis();
         while (millis() - ms < prd) {
             tick();
-            delay(0);  // esp
+            yield();  // esp
         }
     }
 
