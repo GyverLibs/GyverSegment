@@ -104,7 +104,7 @@ class SegBuffer : public Print {
 
         if (_pos >= 0 && _pos < _size) {
             if (_rtol) {
-                uint8_t from = (_shiftSize <= _pos) ? (_pos - _shiftSize + 1) : 0;
+                uint8_t from = (_shiftSize && _shiftSize <= _pos) ? (_pos - _shiftSize + 1) : 0;
                 for (int8_t i = from; i < _pos; i++) buffer[i] = buffer[i + 1];
             }
             buffer[_pos] = sseg::getCharCode(data);

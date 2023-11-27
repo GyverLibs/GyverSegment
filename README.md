@@ -541,6 +541,7 @@ void loop() {
 - v1.0
 - v1.1 - добавлены forceAll() и длина для printRight()
 - v1.1.1 - исправлен баг
+- v1.1.2 - исправлен баг c printRight
 
 <a id="install"></a>
 ## Установка
