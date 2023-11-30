@@ -55,9 +55,7 @@ getSize	KEYWORD2
 update	KEYWORD2
 
 brightness	KEYWORD2
-maxDuty	KEYWORD2
 getBrightness	KEYWORD2
-getMaxDuty	KEYWORD2
 
 setText	KEYWORD2
 setWindow	KEYWORD2
