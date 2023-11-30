@@ -3,7 +3,9 @@
 #include <GyverIO.h>
 
 // задержка клока в мкс
+#ifndef DISP7219_CLK_DELAY
 #define DISP7219_CLK_DELAY 0
+#endif
 
 #define _GSEG_7219_DECODE 0x09
 #define _GSEG_7219_INTENSITY 0x0a

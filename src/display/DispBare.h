@@ -34,26 +34,26 @@ class DispBare : public SegBuffer, public SegDuty {
     // тикер динамической индикации, вызывать в loop
     uint8_t tick() {
         if (!_power) return 0;
-        // no bright
-        if (!getMaxDuty()) {
-            gio::write(_dig[_count], !anode);  // off
-            if (++_count >= digits) _count = 0;
-            _write(_buf[_count]);
-            gio::write(_dig[_count], anode);  // on
-            return 0;
-        }
-
-        uint8_t br = SegDuty::tick();
-        if (!br) return 0;
-
-        if (br == 1) {  // next + on
-            if (++_count >= digits) _count = 0;
-            _write(_buf[_count]);
-            gio::write(_dig[_count], anode);   // on
-        } else {                               // cur off
-            gio::write(_dig[_count], !anode);  // off
-        }
+        if (SegDuty::tout()) tickManual();
         return 0;
+    }
+
+    // тикер динамической индикации, вызывать по своему таймеру
+    void tickManual() {
+        if (!_power) return;
+        if (SegDuty::skip()) return;
+
+        gio::write(_dig[_prev], !anode);  // prev off
+
+        if (_count >= digits) {
+            _count = 0;
+            if (SegDuty::begin()) return;
+        }
+
+        _write(_buf[_count]);
+        gio::write(_dig[_count], anode);  // new on
+        _prev = _count;
+        _count++;
     }
 
     // обновить дисплей
@@ -75,5 +75,6 @@ class DispBare : public SegBuffer, public SegDuty {
     uint8_t _buf[digits] = {0};
     uint8_t *_dig, *_seg;
     uint8_t _count = 0;
+    uint8_t _prev = 0;
     bool _power = 1;
 };

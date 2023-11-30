@@ -1,7 +1,9 @@
 #pragma once
 #include <Arduino.h>
 
+#ifndef DISP1637_CLK_DELAY
 #define DISP1637_CLK_DELAY 100
+#endif
 
 #define _GSEG_1637_DATA 0x40
 #define _GSEG_1637_DISP 0xC0

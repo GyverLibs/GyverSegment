@@ -5,7 +5,10 @@
 #include "utils/SegDuty.h"
 
 // задержка клока в мкс
+
+#ifndef DISP595_CLK_DELAY
 #define DISP595_CLK_DELAY 0
+#endif
 
 class Driver595 : public SegDuty {
    public:
@@ -37,24 +40,24 @@ class Driver595 : public SegDuty {
 
     void tick(uint8_t* buffer, uint8_t size) {
         if (!_power) return;
+        if (SegDuty::tout()) tickManual(buffer, size);
+    }
 
-        // no bright
-        if (!getMaxDuty()) {
-            if (++_count >= size) _count = 0;
-            write(buffer[_count], (1 << _count));
-            return;
+    void tickManual(uint8_t* buffer, uint8_t size) {
+        if (!_power) return;
+        if (SegDuty::skip()) return;
+
+        if (_count >= size) {
+            _count = 0;
+            if (SegDuty::begin()) {  // яркость не макс
+                write(0xff, 0);      // выкл всё
+                return;
+            }
         }
 
-        // bright on
-        uint8_t br = SegDuty::tick();
-        if (!br) return;
-
-        if (br == 1) {  // next + on
-            if (++_count >= size) _count = 0;
-            write(buffer[_count], (1 << _count));
-        } else {  // all off
-            write(0xff, 0);
-        }
+        // вкл следующий
+        write(buffer[_count], (1 << _count));
+        _count++;
     }
 
    private:
