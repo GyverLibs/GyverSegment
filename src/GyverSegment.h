@@ -7,6 +7,7 @@
 //
 #include "display/Disp595_4.h"
 #include "display/Disp595_8.h"
+#include "display/Disp595_8v2.h"
 #include "display/Driver595.h"
 //
 #include "display/Disp1637Colon.h"

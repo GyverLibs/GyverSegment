@@ -51,6 +51,7 @@
 | ![Disp1637_6-0.56](/img/Disp1637_6-0.56.webp)       | TM1637     | 0.56"  | [ссылка](https://fas.st/i0dmi?erid=LatgBbQo6)                                                                                                 | `Disp1637_6`    |
 | ![Disp595_4](/img/Disp595_4.webp)                   | 74HC595    | 0.36"  | [ссылка](https://fas.st/WC-EE?erid=LatgBbQo6), [ссылка](https://fas.st/5d6JH?erid=LatgBbQo6), [ссылка](https://fas.st/UT6RqC?erid=LatgBbQo6)  | `Disp595_4`     |
 | ![Disp595_8](/img/Disp595_8.webp)                   | 74HC595    | 0.36"  | [ссылка](https://fas.st/SzV0w?erid=LatgBbQo6), [ссылка](https://fas.st/YM7Fu?erid=LatgBbQo6)                                                  | `Disp595_8`     |
+| ![Disp595_8](/img/Disp595_8v2.webp)                 | 74HC595    | 0.36"/0.56"  | [ссылка](https://fas.st/6x9q9R?erid=LatgBbQo6)                                                                                          | `Disp595_8v2`   |
 | ![Disp7219](/img/Disp7219.webp)                     | MAX7219    | 0.36"  | [ссылка](https://fas.st/_ugxv1?erid=LatgBbQo6), [ссылка](https://fas.st/IqQly3?erid=LatgBbQo6)                                                | `Disp7219`      |
 
 ### Как устроена библиотека
@@ -86,6 +87,7 @@ void colon(bool show);                    // вкл-выкл двоеточие
 ```cpp
 Disp595_4(uint8_t DIO, uint8_t SCLK, uint8_t RCLK);   // Модуль 4 цифры
 Disp595_8(uint8_t DIO, uint8_t SCLK, uint8_t RCLK);   // Модуль 8 цифр
+Disp595_8v2(uint8_t DIO, uint8_t SCLK, uint8_t RCLK); // Модуль 8 цифр, другая разводка
 
 // у всех
 uint8_t tick();       // тикер динамической индикации, вызывать в loop
@@ -598,6 +600,7 @@ void loop() {
 - v1.2 
   - Переписан драйвер яркости для динамических дисплеев. Снижена нагрузка на процессор, повышена стабильность
   - Добавлен ручной тикер для динамических дисплеев
+- v1.3 - добавлена поддержка дисплея Disp595_8v2
 
 <a id="install"></a>
 ## Установка
