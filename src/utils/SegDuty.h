@@ -68,6 +68,10 @@ class SegDuty {
         return 0;
     }
 
+    bool isMax() {
+        return !_top;
+    }
+
    private:
     // _top == 0 - макс яркость
     uint8_t _count = 0, _top = 0;

@@ -39,8 +39,9 @@ class Driver595 : public SegDuty {
     }
 
     void tick(uint8_t* buffer, uint8_t size) {
-        if (!_power) return;
-        if (SegDuty::tout()) tickManual(buffer, size);
+        if (_power) {
+            if (SegDuty::tout()) tickManual(buffer, size);
+        }
     }
 
     void tickManual(uint8_t* buffer, uint8_t size) {

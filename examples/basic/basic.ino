@@ -8,6 +8,8 @@
 // объявление дисплеев. Выбери любой
 Disp595_4 disp(DIO_PIN, CLK_PIN, LAT_PIN);
 // Disp595_8 disp(DIO_PIN, CLK_PIN, LAT_PIN);
+// Disp595_8v2 disp(DIO_PIN, CLK_PIN, LAT_PIN);
+// Disp595Static<4> disp(DIO_PIN, CLK_PIN, LAT_PIN);
 // Disp1637_4 disp(DIO_PIN, CLK_PIN);
 // Disp1637_6 disp(DIO_PIN, CLK_PIN);
 // Disp1637Colon disp(DIO_PIN, CLK_PIN);

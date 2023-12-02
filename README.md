@@ -39,7 +39,7 @@
 <a id="disp"></a>
 ## Документация
 ### Поддерживаемые дисплеи
-> Если вы нашли хороший модуль дисплея, который не поддерживается библиотекой - пишите. Закажу, протестирую, добавлю в библиотеку.
+> Если вы нашли хороший модуль дисплея, который не поддерживается библиотекой - пишите. Закажу, протестирую, добавлю.
 
 | Фото                                                | Контроллер | Размер | AliExpress                                                                                                                                    | Класс           |
 |-----------------------------------------------------|------------|--------|-----------------------------------------------------------------------------------------------------------------------------------------------|-----------------|
@@ -51,7 +51,8 @@
 | ![Disp1637_6-0.56](/img/Disp1637_6-0.56.webp)       | TM1637     | 0.56"  | [ссылка](https://fas.st/i0dmi?erid=LatgBbQo6)                                                                                                 | `Disp1637_6`    |
 | ![Disp595_4](/img/Disp595_4.webp)                   | 74HC595    | 0.36"  | [ссылка](https://fas.st/WC-EE?erid=LatgBbQo6), [ссылка](https://fas.st/5d6JH?erid=LatgBbQo6), [ссылка](https://fas.st/UT6RqC?erid=LatgBbQo6)  | `Disp595_4`     |
 | ![Disp595_8](/img/Disp595_8.webp)                   | 74HC595    | 0.36"  | [ссылка](https://fas.st/SzV0w?erid=LatgBbQo6), [ссылка](https://fas.st/YM7Fu?erid=LatgBbQo6)                                                  | `Disp595_8`     |
-| ![Disp595_8](/img/Disp595_8v2.webp)                 | 74HC595    | 0.36"/0.56"  | [ссылка](https://fas.st/6x9q9R?erid=LatgBbQo6)                                                                                          | `Disp595_8v2`   |
+| ![Disp595_8v2](/img/Disp595_8v2.webp)               | 74HC595    | 0.36"/0.56"  | [ссылка](https://fas.st/6x9q9R?erid=LatgBbQo6)                                                                                          | `Disp595_8v2`   |
+| ![Disp595_8s](/img/Disp595Static.webp)              | 74HC595    | 0.56"  | [ссылка](https://fas.st/wlOjS?erid=LatgBbQo6), [ссылка](https://fas.st/9eA7PC?erid=LatgBbQo6), [ссылка](https://fas.st/U6eEnq?erid=LatgBbQo6) | `Disp595Static` |
 | ![Disp7219](/img/Disp7219.webp)                     | MAX7219    | 0.36"  | [ссылка](https://fas.st/_ugxv1?erid=LatgBbQo6), [ссылка](https://fas.st/IqQly3?erid=LatgBbQo6)                                                | `Disp7219`      |
 
 ### Как устроена библиотека
@@ -85,9 +86,10 @@ void colon(bool show);                    // вкл-выкл двоеточие
 
 ### 74HC595
 ```cpp
-Disp595_4(uint8_t DIO, uint8_t SCLK, uint8_t RCLK);   // Модуль 4 цифры
-Disp595_8(uint8_t DIO, uint8_t SCLK, uint8_t RCLK);   // Модуль 8 цифр
-Disp595_8v2(uint8_t DIO, uint8_t SCLK, uint8_t RCLK); // Модуль 8 цифр, другая разводка
+Disp595_4(uint8_t DIO, uint8_t SCLK, uint8_t RCLK);     // Модуль 4 цифры
+Disp595_8(uint8_t DIO, uint8_t SCLK, uint8_t RCLK);     // Модуль 8 цифр
+Disp595_8v2(uint8_t DIO, uint8_t SCLK, uint8_t RCLK);   // Модуль 8 цифр, другая разводка
+Disp595Static<int amount> (uint8_t SDI, uint8_t SCLK, uint8_t LOAD); // любое кол-во цифр. Статическая индикация!
 
 // у всех
 uint8_t tick();       // тикер динамической индикации, вызывать в loop
@@ -99,10 +101,12 @@ void brightness(uint8_t bright);    // установить яркость (0.. 
 #define GS_EXP_TIME 100       // время экспонирования знакоместа
 ```
 
+> `Disp595Static` работает без вызова `tick`. Но если нужно управление яркостью - нужно вызывать `tick`!
+
 ### MAX7219
 ```cpp
 // Модуль 8 цифр
-Disp7219<uint8_t amount>(uint8_t DIN, uint8_t CLK, uint8_t CS, bool reverse = true);
+Disp7219<int amount>(uint8_t DIN, uint8_t CLK, uint8_t CS, bool reverse = true);
 
 void begin();                       // инициализировать (нужно после сброса питания модуля)
 void brightness(uint8_t value);     // установить яркость (0.. 15)
@@ -543,6 +547,8 @@ class MyDisp : public SegBuffer {
 // объявление дисплеев. Выбери любой
 Disp595_4 disp(DIO_PIN, CLK_PIN, LAT_PIN);
 // Disp595_8 disp(DIO_PIN, CLK_PIN, LAT_PIN);
+// Disp595_8v2 disp(DIO_PIN, CLK_PIN, LAT_PIN);
+// Disp595Static<4> disp(DIO_PIN, CLK_PIN, LAT_PIN);
 // Disp1637_4 disp(DIO_PIN, CLK_PIN);
 // Disp1637_6 disp(DIO_PIN, CLK_PIN);
 // Disp1637Colon disp(DIO_PIN, CLK_PIN);
@@ -601,6 +607,7 @@ void loop() {
   - Переписан драйвер яркости для динамических дисплеев. Снижена нагрузка на процессор, повышена стабильность
   - Добавлен ручной тикер для динамических дисплеев
 - v1.3 - добавлена поддержка дисплея Disp595_8v2
+- v1.4 - добавлена поддержка дисплея Disp595Static
 
 <a id="install"></a>
 ## Установка
