@@ -618,7 +618,7 @@ void loop() {
   disp.print(n);
   disp.update();
   n++;
-  delay(100);
+  disp.delay(100);  // для дин. дисплеев
 }
 ```
 
