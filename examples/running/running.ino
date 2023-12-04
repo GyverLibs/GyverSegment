@@ -16,7 +16,7 @@ Disp595_8 disp(DIO_PIN, CLK_PIN, LAT_PIN);
 uint8_t digs[] = {2, 3, 4, 5, A2, A3, A4, A5};  // пины цифр
 uint8_t segs[] = {6, 7, 8, 9, 10, 11, 12, 13};  // пины сегментов
 // 8 цифр, дсятичные точки есть, общий катод
-// BareDisp<8, true, false> disp(digs, segs);
+// DispBare<8, true, false> disp(digs, segs);
 
 SegRunner run(&disp);
 const char pstr[] PROGMEM = "hello progmem";
