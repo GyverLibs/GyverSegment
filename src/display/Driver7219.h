@@ -40,10 +40,21 @@ class Driver7219 {
     void brightness(uint8_t value) {
         _cmd(_GSEG_7219_INTENSITY, value);
     }
+    void brightness(uint8_t* value) {
+        _cmd_array(_GSEG_7219_INTENSITY, value);
+    }
 
     // управление питанием (true вкл, false выкл)
     void power(bool state) {
         _cmd(_GSEG_7219_SHUTDOWDN, state);
+    }
+    void power(uint8_t* state) {
+        _cmd_array(_GSEG_7219_SHUTDOWDN, state);
+    }
+
+    // получить количество чипов
+    uint8_t getAmount() {
+        return _amount;
     }
 
    protected:
@@ -73,6 +84,11 @@ class Driver7219 {
     void _cmd(uint8_t addr, uint8_t value) {
         gio::low(_cs);
         for (uint16_t i = 0; i < _amount; i++) _write(addr, value);
+        gio::high(_cs);
+    }
+    void _cmd_array(uint8_t addr, uint8_t* value) {
+        gio::low(_cs);
+        for (uint16_t i = 0; i < _amount; i++) _write(addr, value[_amount - i - 1]);
         gio::high(_cs);
     }
 };

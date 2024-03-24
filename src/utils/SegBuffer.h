@@ -29,6 +29,11 @@ class SegBuffer : public Print {
         return _pos;
     }
 
+    // использовать шрифт или сырые данные (умолч. true - шрифт)
+    void useFont(bool font) {
+        _useFont = font;
+    }
+
     // проверка уместится ли int число при текущем курсоре
     bool checkInt(int32_t val) {
         return (_pos >= 0) && (_pos + sseg::intLen(val) <= _size);
@@ -92,7 +97,7 @@ class SegBuffer : public Print {
 
     // вывести символ в текущую позицию курсора
     size_t write(uint8_t data) {
-        if (data == '.') {
+        if (_useFont && data == '.') {
             if (!_dec) return 1;
             if (_rtol) {
                 if (_pos >= 0 && _pos < _size) bitSet(buffer[_pos], 7);
@@ -107,13 +112,13 @@ class SegBuffer : public Print {
                 uint8_t from = (_shiftSize && _shiftSize <= _pos) ? (_pos - _shiftSize + 1) : 0;
                 for (int8_t i = from; i < _pos; i++) buffer[i] = buffer[i + 1];
             }
-            buffer[_pos] = sseg::getCharCode(data);
+            buffer[_pos] = _useFont ? sseg::getCharCode(data) : data;
         }
         if (!_rtol) _pos++;
         return 1;
     }
 
-    // получить размер дисплея
+    // получить размер дисплея (размер буфера)
     uint8_t getSize() {
         return _size;
     }
@@ -142,4 +147,5 @@ class SegBuffer : public Print {
     int16_t _pos = 0;
     bool _rtol = 0;
     uint8_t _shiftSize = 0;
+    bool _useFont = 1;
 };
