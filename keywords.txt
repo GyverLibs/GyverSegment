@@ -55,7 +55,7 @@ showClock	KEYWORD2
 write	KEYWORD2
 getSize	KEYWORD2
 update	KEYWORD2
-useFont	KEYWORD2
+writeByte	KEYWORD2
 
 brightness	KEYWORD2
 getBrightness	KEYWORD2

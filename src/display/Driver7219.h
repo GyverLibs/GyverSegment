@@ -58,7 +58,7 @@ class Driver7219 {
     }
 
    protected:
-    void write(uint8_t* data, bool reverse = 0) {
+    void write(uint8_t* data, bool reverse) {
         for (int i = 0; i < 8; i++) {
             gio::low(_cs);
             for (int j = 0; j < _amount; j++) {

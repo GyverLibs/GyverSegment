@@ -217,8 +217,7 @@ disp.update();
   disp.print(val);
   disp.printRight(false); // отключить печать справа
 
-  disp.useFont(false);    // отключить встроенный шрифт
-  disp.write(0b11001100); // выводить свои данные на сегменты
+  disp.writeByte(0b11001100); // выводить свои данные на сегменты
 ```
 
 <details>
@@ -239,9 +238,6 @@ void setCursorEnd(int16_t pos = 0);
 
 // получить позицию курсора
 int16_t getCursor();
-
-// использовать шрифт или сырые данные (умолч. true - шрифт)
-void useFont(bool font);
 
 // проверка уместится ли int число при текущем курсоре
 bool checkInt(int32_t val);
@@ -278,6 +274,10 @@ void showClock(uint8_t hour, uint8_t minute, uint8_t from = 0);
 
 // вывести символ в текущую позицию курсора
 size_t write(uint8_t data);
+
+// вывести байт в текущую позицию курсора
+void writeByte(uint8_t data);
+void writeByte(uint8_t* data, uint8_t len);
 
 // получить размер дисплея
 uint8_t getSize();
@@ -645,7 +645,7 @@ void loop() {
   - Добавлен ручной тикер для динамических дисплеев
 - v1.3 - добавлена поддержка дисплея Disp595_8v2
 - v1.4 - добавлена поддержка дисплея Disp595Static
-- v1.4.2 - добавлено пакетное управление яркостью 7219 и режим вывода без шрифта
+- v1.4.2 - добавлено пакетное управление яркостью 7219 и режим вывода сырых данных writeByte
 
 <a id="install"></a>
 ## Установка

@@ -29,11 +29,6 @@ class SegBuffer : public Print {
         return _pos;
     }
 
-    // использовать шрифт или сырые данные (умолч. true - шрифт)
-    void useFont(bool font) {
-        _useFont = font;
-    }
-
     // проверка уместится ли int число при текущем курсоре
     bool checkInt(int32_t val) {
         return (_pos >= 0) && (_pos + sseg::intLen(val) <= _size);
@@ -93,6 +88,20 @@ class SegBuffer : public Print {
         setCursor(from + 2);
         if (minute < 10) print(0);
         print(minute);
+    }
+
+    // вывести байт в текущую позицию курсора
+    void writeByte(uint8_t data) {
+        _useFont = 0;
+        write(data);
+        _useFont = 1;
+    }
+
+    // вывести байты в текущую позицию курсора
+    void writeByte(uint8_t* data, uint8_t len) {
+        _useFont = 0;
+        while (len--) write(*data++);
+        _useFont = 1;
     }
 
     // вывести символ в текущую позицию курсора
