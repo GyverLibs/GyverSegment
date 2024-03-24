@@ -85,45 +85,23 @@ class SegBuffer : public Print {
         setCursor(from);
         if (hour < 10) print(' ');
         print(hour);
-        setCursor(from + 2);
         if (minute < 10) print(0);
         print(minute);
     }
 
     // вывести байт в текущую позицию курсора
     void writeByte(uint8_t data) {
-        _useFont = 0;
-        write(data);
-        _useFont = 1;
+        _write(data, false);
     }
 
     // вывести байты в текущую позицию курсора
     void writeByte(uint8_t* data, uint8_t len) {
-        _useFont = 0;
-        while (len--) write(*data++);
-        _useFont = 1;
+        while (len--) writeByte(*data++);
     }
 
     // вывести символ в текущую позицию курсора
     size_t write(uint8_t data) {
-        if (_useFont && data == '.') {
-            if (!_dec) return 1;
-            if (_rtol) {
-                if (_pos >= 0 && _pos < _size) bitSet(buffer[_pos], 7);
-            } else {
-                if (_pos > 0 && _pos <= _size) bitSet(buffer[_pos - 1], 7);
-            }
-            return 1;
-        }
-
-        if (_pos >= 0 && _pos < _size) {
-            if (_rtol) {
-                uint8_t from = (_shiftSize && _shiftSize <= _pos) ? (_pos - _shiftSize + 1) : 0;
-                for (int8_t i = from; i < _pos; i++) buffer[i] = buffer[i + 1];
-            }
-            buffer[_pos] = _useFont ? sseg::getCharCode(data) : data;
-        }
-        if (!_rtol) _pos++;
+        _write(data, true);
         return 1;
     }
 
@@ -156,5 +134,25 @@ class SegBuffer : public Print {
     int16_t _pos = 0;
     bool _rtol = 0;
     uint8_t _shiftSize = 0;
-    bool _useFont = 1;
+
+    void _write(uint8_t data, bool useFont) {
+        if (useFont && data == '.') {
+            if (!_dec) return;
+            if (_rtol) {
+                if (_pos >= 0 && _pos < _size) bitSet(buffer[_pos], 7);
+            } else {
+                if (_pos > 0 && _pos <= _size) bitSet(buffer[_pos - 1], 7);
+            }
+            return;
+        }
+
+        if (_pos >= 0 && _pos < _size) {
+            if (_rtol) {
+                uint8_t from = (_shiftSize && _shiftSize <= _pos) ? (_pos - _shiftSize + 1) : 0;
+                for (int8_t i = from; i < _pos; i++) buffer[i] = buffer[i + 1];
+            }
+            buffer[_pos] = useFont ? sseg::getCharCode(data) : data;
+        }
+        if (!_rtol) _pos++;
+    }
 };
