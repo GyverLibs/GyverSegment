@@ -8,7 +8,7 @@
 class Disp1637Colon : public Driver1637, public SegBuffer {
    public:
     // пины DIO, CLK
-    Disp1637Colon(uint8_t DIO, uint8_t CLK) : Driver1637(DIO, CLK), SegBuffer(buffer, 4, 0) {
+    Disp1637Colon(uint8_t DIO, uint8_t CLK, bool USE_DOTS = false) : Driver1637(DIO, CLK), SegBuffer(buffer, 4, USE_DOTS) {
         update();
     }
 
