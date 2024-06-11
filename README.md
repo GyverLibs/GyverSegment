@@ -74,7 +74,7 @@ uint8_t* buffer;            // доступ к буферу
 
 ### TM1637
 ```cpp
-Disp1637Colon(uint8_t DIO, uint8_t CLK);  // Модуль 4 цифры + двоеточие
+Disp1637Colon(uint8_t DIO, uint8_t CLK, bool dots);  // Модуль 4 цифры + двоеточие
 Disp1637_4(uint8_t DIO, uint8_t CLK);     // Модуль 4 цифры + точки
 Disp1637_6(uint8_t DIO, uint8_t CLK);     // Модуль 6 цифр + точки
 
