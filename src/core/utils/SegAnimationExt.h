@@ -112,7 +112,7 @@ class SegAnimationExt : public SegBuffer {
                 if (!_maskall) {
                     _mask = 0;
                     for (uint8_t i = 0; i < min(_size, (uint8_t)32); i++) {
-                        if (_disp->buffer[_from + i] != buffer[i]) _mask |= (1ul << i);
+                        if ((_disp->buffer[_from + i] & 0x7F) != (buffer[i] & 0x7F)) _mask |= (1ul << i);
                     }
                 }
             }
@@ -136,7 +136,11 @@ class SegAnimationExt : public SegBuffer {
     bool _state = 0;
 
     bool _differ() {
-        return memcmp(_disp->buffer + _from, buffer, _size);
+        for (uint8_t i = 0; i < _size; i++) {
+            if ((_disp->buffer[_from + i] & 0x7F) != (buffer[i] & 0x7F)) return 1;
+        }
+        return 0;
+        // return memcmp(_disp->buffer + _from, buffer, _size);
     }
 
     void _apply(uint8_t i) {
