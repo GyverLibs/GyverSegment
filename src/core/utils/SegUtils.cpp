@@ -90,18 +90,20 @@ uint8_t getCharCode(char symb) {
     return pgm_read_byte(_segCharMap + (symb - 32));
 }
 
-uint8_t intLen(int32_t val) {
-    if (!val) return 1;
-    uint8_t len = (val < 0);
-    while (val) {
-        len++;
-        val /= 10;
-    }
+uint8_t intLen(uint32_t val) {
+    uint8_t len = 0;
+    do len++;
+    while (val /= 10);
     return len;
 }
 
+uint8_t intLen(int32_t val) {
+    bool neg = val < 0;
+    return intLen(uint32_t(neg ? -val : val)) + neg;
+}
+
 uint8_t floatLen(double val, uint8_t dec) {
-    return intLen(val) + dec;
+    return intLen((int32_t)val) + dec;
 }
 
 }  // namespace sseg

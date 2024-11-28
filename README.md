@@ -502,6 +502,7 @@ uint8_t sseg::getCharCode(char symb);
 
 // получить длину int числа
 uint8_t sseg::intLen(int32_t val);
+uint8_t sseg::intLen(uint32_t val);
 
 // получить длину float числа при указанной точности
 uint8_t sseg::floatLen(double val, uint8_t dec = 2);
