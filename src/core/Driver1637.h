@@ -11,11 +11,11 @@
 
 class Driver1637 {
    public:
-    Driver1637(uint8_t DIO, uint8_t CLK) : DIO(DIO), CLK(CLK) {
-        pinMode(CLK, INPUT);
-        pinMode(DIO, INPUT);
-        digitalWrite(CLK, LOW);
-        digitalWrite(DIO, LOW);
+    Driver1637(uint8_t dio, uint8_t clk) : _dio(dio), _clk(clk) {
+        pinMode(_clk, INPUT);
+        pinMode(_dio, INPUT);
+        digitalWrite(_clk, LOW);
+        digitalWrite(_dio, LOW);
     }
 
     // яркость, 0.. 7
@@ -37,9 +37,7 @@ class Driver1637 {
         _stop();
         _start();
         _write(_GSEG_1637_DISP);
-        for (uint8_t i = 0; i < size; i++) {
-            _write(buf[i]);
-        }
+        while (size--) _write(*buf++);
         _stop();
         _start();
         _write(cfg);
@@ -49,47 +47,47 @@ class Driver1637 {
     virtual void update() {}
 
    private:
-    uint8_t DIO, CLK;
+    uint8_t _dio, _clk;
     uint8_t cfg = 0x8F;  // 1000<power:1><bright:3>
 
     void _start() {
-        pinMode(CLK, INPUT);
-        pinMode(DIO, INPUT);
+        pinMode(_clk, INPUT);
+        pinMode(_dio, INPUT);
         delayMicroseconds(DISP1637_CLK_DELAY);
-        pinMode(DIO, OUTPUT);
+        pinMode(_dio, OUTPUT);
     }
 
     void _stop() {
-        pinMode(CLK, OUTPUT);
+        pinMode(_clk, OUTPUT);
         delayMicroseconds(DISP1637_CLK_DELAY);
-        pinMode(DIO, OUTPUT);
+        pinMode(_dio, OUTPUT);
         delayMicroseconds(DISP1637_CLK_DELAY);
-        pinMode(CLK, INPUT);
+        pinMode(_clk, INPUT);
         delayMicroseconds(DISP1637_CLK_DELAY);
-        pinMode(DIO, INPUT);
+        pinMode(_dio, INPUT);
     }
 
     void _write(uint8_t data) {
         // send
         for (uint8_t i = 0; i < 8; i++) {
-            pinMode(CLK, OUTPUT);
-            if (data & 1) pinMode(DIO, INPUT);
-            else pinMode(DIO, OUTPUT);
+            pinMode(_clk, OUTPUT);
+            pinMode(_dio, (data & 1) ? INPUT : OUTPUT);
             delayMicroseconds(DISP1637_CLK_DELAY);
             data >>= 1;
-            pinMode(CLK, INPUT);
+            pinMode(_clk, INPUT);
             delayMicroseconds(DISP1637_CLK_DELAY);
         }
 
         // ack
-        pinMode(CLK, OUTPUT);
-        pinMode(DIO, INPUT);
-        for (uint8_t i = 50; i; i--) {
+        pinMode(_clk, OUTPUT);
+        pinMode(_dio, INPUT);
+        uint8_t i = 50;
+        while (i--) {
             delayMicroseconds(1);
-            if (!digitalRead(DIO)) break;
+            if (!digitalRead(_dio)) break;
         }
-        pinMode(CLK, INPUT);
+        pinMode(_clk, INPUT);
         delayMicroseconds(DISP1637_CLK_DELAY);
-        pinMode(CLK, OUTPUT);
+        pinMode(_clk, OUTPUT);
     }
 };
