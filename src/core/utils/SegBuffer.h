@@ -119,6 +119,42 @@ class SegBuffer : public Print {
         }
     }
 
+    // очистить, напечатать слева, обновить
+    template <typename T>
+    void clearPrint(T v) {
+        clear();
+        home();
+        print(v);
+        update();
+    }
+    template <typename T>
+    void clearPrint(T v, uint8_t d) {
+        clear();
+        home();
+        print(v, d);
+        update();
+    }
+
+    // очистить, напечатать справа, обновить
+    template <typename T>
+    void clearPrintR(T v) {
+        clear();
+        setCursorEnd();
+        printRight(true);
+        print(v);
+        update();
+        printRight(false);
+    }
+    template <typename T>
+    void clearPrintR(T v, uint8_t d) {
+        clear();
+        setCursorEnd();
+        printRight(true);
+        print(v, d);
+        update();
+        printRight(false);
+    }
+
     virtual void update() {}
 
     // пустой тикер, для совместимости с другими дисплеями

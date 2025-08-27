@@ -285,6 +285,14 @@ uint8_t getSize();
 
 // аналог delay, но внутри него вызывается тикер динамической индикации
 void delay(uint32_t prd);
+
+// очистить, напечатать слева, обновить
+void clearPrint(T v);
+void clearPrint(T v, uint8_t d);
+
+// очистить, напечатать справа, обновить
+void clearPrintR(T v);
+void clearPrintR(T v, uint8_t d);
 ```
 </details>
 
