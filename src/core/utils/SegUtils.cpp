@@ -92,18 +92,17 @@ uint8_t getCharCode(char symb) {
 
 uint8_t intLen(uint32_t val) {
     uint8_t len = 0;
-    do len++;
+    do ++len;
     while (val /= 10);
     return len;
 }
 
 uint8_t intLen(int32_t val) {
-    bool neg = val < 0;
-    return intLen(uint32_t(neg ? -val : val)) + neg;
+    return intLen(uint32_t(val < 0 ? -val : val)) + (val < 0);
 }
 
-uint8_t floatLen(double val, uint8_t dec) {
-    return intLen((int32_t)val) + dec;
+uint8_t floatLen(float val, uint8_t dec) {
+    return (val < 0) + intLen(uint32_t(val < 0 ? -val : val)) + (dec ? dec + 1 : 0);
 }
 
 }  // namespace sseg
