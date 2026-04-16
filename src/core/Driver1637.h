@@ -1,21 +1,37 @@
 #pragma once
 #include <Arduino.h>
 
-#ifndef DISP1637_CLK_DELAY
-#define DISP1637_CLK_DELAY 128
-#endif
-
 #define _GSEG_1637_DATA 0x40
 #define _GSEG_1637_DISP 0x80
 #define _GSEG_1637_ADDR 0xC0
 
+// mode
+#ifdef DISP1637_OPEN_DRAIN
+
+#ifndef DISP1637_CLK_DELAY
+#define DISP1637_CLK_DELAY 128
+#endif
+
+#define DP1637_INIT(pin) (pinMode(pin, INPUT), digitalWrite(pin, LOW))
+#define DP1637_LOW(pin) pinMode(pin, OUTPUT)
+#define DP1637_HIGH(pin) pinMode(pin, INPUT)
+#else  // push-pull
+
+#ifndef DISP1637_CLK_DELAY
+#define DISP1637_CLK_DELAY 32
+#endif
+
+#define DP1637_INIT(pin) (digitalWrite(pin, HIGH), pinMode(pin, OUTPUT))
+#define DP1637_LOW(pin) digitalWrite(pin, LOW)
+#define DP1637_HIGH(pin) digitalWrite(pin, HIGH)
+#endif
+// mode
+
 class Driver1637 {
    public:
     Driver1637(uint8_t dio, uint8_t clk) : _dio(dio), _clk(clk) {
-        pinMode(_clk, INPUT);
-        pinMode(_dio, INPUT);
-        digitalWrite(_clk, LOW);
-        digitalWrite(_dio, LOW);
+        DP1637_INIT(_clk);
+        DP1637_INIT(_dio);
     }
 
     // яркость, 0.. 7
@@ -53,43 +69,48 @@ class Driver1637 {
     uint8_t cfg = 0x8F;  // 1000<power:1><bright:3>
 
     void _start() {
-        pinMode(_clk, INPUT);
-        pinMode(_dio, INPUT);
+        DP1637_LOW(_dio);
         delayMicroseconds(DISP1637_CLK_DELAY);
-        pinMode(_dio, OUTPUT);
     }
 
     void _stop() {
-        pinMode(_clk, OUTPUT);
+        DP1637_LOW(_clk);
+        DP1637_LOW(_dio);
         delayMicroseconds(DISP1637_CLK_DELAY);
-        pinMode(_dio, OUTPUT);
+
+        DP1637_HIGH(_clk);
         delayMicroseconds(DISP1637_CLK_DELAY);
-        pinMode(_clk, INPUT);
+        DP1637_HIGH(_dio);
         delayMicroseconds(DISP1637_CLK_DELAY);
-        pinMode(_dio, INPUT);
     }
 
     void _write(uint8_t data) {
         // send
         for (uint8_t i = 0; i < 8; i++) {
-            pinMode(_clk, OUTPUT);
-            pinMode(_dio, (data & 1) ? INPUT : OUTPUT);
+            DP1637_LOW(_clk);
+            if (data & 1) DP1637_HIGH(_dio);
+            else DP1637_LOW(_dio);
             delayMicroseconds(DISP1637_CLK_DELAY);
+
+            DP1637_HIGH(_clk);
+            delayMicroseconds(DISP1637_CLK_DELAY);
+
             data >>= 1;
-            pinMode(_clk, INPUT);
-            delayMicroseconds(DISP1637_CLK_DELAY);
         }
 
-        // ack
-        pinMode(_clk, OUTPUT);
+        // ACK
+        DP1637_LOW(_clk);
         pinMode(_dio, INPUT);
         delayMicroseconds(DISP1637_CLK_DELAY);
 
-        pinMode(_clk, INPUT);
+        DP1637_HIGH(_clk);
         delayMicroseconds(DISP1637_CLK_DELAY);
-        // delayMicroseconds(DISP1637_CLK_DELAY / 2);
-        // bool ack = !digitalRead(_dio);
-        // delayMicroseconds(DISP1637_CLK_DELAY / 2);
-        pinMode(_clk, OUTPUT);
+
+        DP1637_LOW(_clk);
+
+#ifndef DISP1637_OPEN_DRAIN
+        digitalWrite(_dio, HIGH);
+        pinMode(_dio, OUTPUT);
+#endif
     }
 };
