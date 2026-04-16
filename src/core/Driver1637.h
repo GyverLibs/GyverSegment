@@ -2,12 +2,12 @@
 #include <Arduino.h>
 
 #ifndef DISP1637_CLK_DELAY
-#define DISP1637_CLK_DELAY 100
+#define DISP1637_CLK_DELAY 128
 #endif
 
 #define _GSEG_1637_DATA 0x40
-#define _GSEG_1637_DISP 0xC0
-#define _GSEG_1637_ADDR 0x80
+#define _GSEG_1637_DISP 0x80
+#define _GSEG_1637_ADDR 0xC0
 
 class Driver1637 {
    public:
@@ -35,10 +35,12 @@ class Driver1637 {
         _start();
         _write(_GSEG_1637_DATA);
         _stop();
+
         _start();
-        _write(_GSEG_1637_DISP);
+        _write(_GSEG_1637_ADDR);
         while (size--) _write(*buf++);
         _stop();
+
         _start();
         _write(cfg);
         _stop();
@@ -81,13 +83,13 @@ class Driver1637 {
         // ack
         pinMode(_clk, OUTPUT);
         pinMode(_dio, INPUT);
-        uint8_t i = 50;
-        while (i--) {
-            delayMicroseconds(1);
-            if (!digitalRead(_dio)) break;
-        }
+        delayMicroseconds(DISP1637_CLK_DELAY);
+
         pinMode(_clk, INPUT);
         delayMicroseconds(DISP1637_CLK_DELAY);
+        // delayMicroseconds(DISP1637_CLK_DELAY / 2);
+        // bool ack = !digitalRead(_dio);
+        // delayMicroseconds(DISP1637_CLK_DELAY / 2);
         pinMode(_clk, OUTPUT);
     }
 };

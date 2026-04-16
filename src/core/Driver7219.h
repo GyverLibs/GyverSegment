@@ -10,7 +10,7 @@
 #define _GSEG_7219_DECODE 0x09
 #define _GSEG_7219_INTENSITY 0x0a
 #define _GSEG_7219_SCAN_LIM 0x0b
-#define _GSEG_7219_SHUTDOWDN 0x0c
+#define _GSEG_7219_SHUTDOWN 0x0c
 #define _GSEG_7219_TEST_MODE 0x0f
 
 class Driver7219 {
@@ -32,13 +32,13 @@ class Driver7219 {
         _cmd(_GSEG_7219_TEST_MODE, 0x00);
         _cmd(_GSEG_7219_DECODE, 0x00);
         _cmd(_GSEG_7219_INTENSITY, 0x00);
-        _cmd(_GSEG_7219_SCAN_LIM, 0x0f);
-        _cmd(_GSEG_7219_SHUTDOWDN, 0x01);
+        _cmd(_GSEG_7219_SCAN_LIM, 0x07);
+        _cmd(_GSEG_7219_SHUTDOWN, 0x01);
     }
 
     // установить яркость (0.. 15)
     void brightness(uint8_t value) {
-        _cmd(_GSEG_7219_INTENSITY, value);
+        _cmd(_GSEG_7219_INTENSITY, value & 0x0F);
     }
     void brightness(uint8_t* value) {
         _cmd_array(_GSEG_7219_INTENSITY, value);
@@ -46,10 +46,10 @@ class Driver7219 {
 
     // управление питанием (true вкл, false выкл)
     void power(bool state) {
-        _cmd(_GSEG_7219_SHUTDOWDN, state);
+        _cmd(_GSEG_7219_SHUTDOWN, state);
     }
     void power(uint8_t* state) {
-        _cmd_array(_GSEG_7219_SHUTDOWDN, state);
+        _cmd_array(_GSEG_7219_SHUTDOWN, state);
     }
 
     // получить количество чипов
