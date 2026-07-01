@@ -101,7 +101,7 @@ uint8_t intLen(int32_t val) {
     return intLen(uint32_t(val < 0 ? -val : val)) + (val < 0);
 }
 
-uint8_t floatLen(float val, uint8_t dec) {
+uint8_t floatLen(double val, uint8_t dec) {
     return (val < 0) + intLen(uint32_t(val < 0 ? -val : val)) + (dec ? dec + 1 : 0);
 }
 

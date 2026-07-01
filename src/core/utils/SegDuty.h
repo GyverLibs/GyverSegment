@@ -75,5 +75,5 @@ class SegDuty {
    private:
     // _top == 0 - макс яркость
     uint8_t _count = 0, _top = 0;
-    uint16_t _tmr;
+    uint16_t _tmr = 0;
 };

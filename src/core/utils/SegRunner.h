@@ -13,7 +13,7 @@ class SegRunner {
    public:
     SegRunner(SegBuffer* disp) : _disp(disp) {
         _x0 = 0;
-        _x1 = _disp->getSize() - 1;
+        _x1 = _disp->getSize() ? (_disp->getSize() - 1) : 0;
     }
 
     // установить текст const char*
@@ -37,8 +37,10 @@ class SegRunner {
 
     // установить окно вывода (x0, x1)
     void setWindow(uint8_t x0, uint8_t x1) {
-        _x0 = min(x0, _disp->getSize());
-        _x1 = min(x1, _disp->getSize());
+        if (!_disp->getSize()) return;
+        uint8_t last = _disp->getSize() - 1;
+        _x0 = min(x0, last);
+        _x1 = min(x1, last);
         if (_x0 > _x1) {
             uint8_t b = _x0;
             _x0 = _x1;
@@ -102,7 +104,7 @@ class SegRunner {
 
     // сдвинуть строку на 1 символ. Можно передать false, чтобы дисплей не обновлялся сам
     uint8_t tickManual(bool update = true) {
-        if (!_str) return 0;
+        if (!_str || !_disp->getSize()) return 0;
         memset(_disp->buffer + _x0, 0, _x1 - _x0 + 1);
 
         int16_t cpos = 0;

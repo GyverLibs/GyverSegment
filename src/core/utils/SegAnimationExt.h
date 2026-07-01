@@ -32,9 +32,9 @@ class SegAnimationExt : public SegBuffer {
                     uint8_t from,
                     bool dec = 1) : SegBuffer(buffer, size, dec),
                                     buffer(buffer),
-                                    _size(size),
                                     _disp(disp),
-                                    _from(min(from, size)) {}
+                                    _from(min(from, disp->getSize())),
+                                    _size(min(size, (uint8_t)(disp->getSize() - _from))) {}
 
     // установить эффект и время его выполнения в мс
     void setEffect(SegEffect eff, uint16_t duration = 300) {
@@ -68,7 +68,7 @@ class SegAnimationExt : public SegBuffer {
 
     // true - эффект воспроизводится
     bool running() {
-        return _count;
+        return _state && (_count || _differ());
     }
 
     // ждать окончания воспроизведения эффекта
@@ -91,7 +91,13 @@ class SegAnimationExt : public SegBuffer {
 
     // ручной тикер. Вернёт 0 в холостом, 1 при новом шаге, 2 при завершении анимации
     uint8_t tickManual() {
-        if (_eff == SegEffect::None) return 0;
+        if (_eff == SegEffect::None) {
+            if (_differ()) {
+                refresh();
+                return GS_ANIMATION_END;
+            }
+            return GS_ANIMATION_IDLE;
+        }
 
         if (_count) {
             if (_maskall) {
@@ -112,7 +118,7 @@ class SegAnimationExt : public SegBuffer {
                 if (!_maskall) {
                     _mask = 0;
                     for (uint8_t i = 0; i < min(_size, (uint8_t)32); i++) {
-                        if ((_disp->buffer[_from + i] & 0x7F) != (buffer[i] & 0x7F)) _mask |= (1ul << i);
+                        if (_disp->buffer[_from + i] != buffer[i]) _mask |= (1ul << i);
                     }
                 }
             }
@@ -124,9 +130,9 @@ class SegAnimationExt : public SegBuffer {
     uint8_t* buffer = nullptr;
 
    private:
-    uint8_t _size;
     SegBuffer* _disp;
     uint8_t _from;
+    uint8_t _size;
 
     uint16_t _tmr = 0, _prd = 100;
     SegEffect _eff = SegEffect::None;
@@ -137,7 +143,7 @@ class SegAnimationExt : public SegBuffer {
 
     bool _differ() {
         for (uint8_t i = 0; i < _size; i++) {
-            if ((_disp->buffer[_from + i] & 0x7F) != (buffer[i] & 0x7F)) return 1;
+            if (_disp->buffer[_from + i] != buffer[i]) return 1;
         }
         return 0;
         // return memcmp(_disp->buffer + _from, buffer, _size);
